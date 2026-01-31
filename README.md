@@ -2,7 +2,7 @@
 
 Proyecto full-stack con Next.js 16 + React 19 (frontend) y FastAPI con WebSockets (backend).
 
-[imagen demo](./screen.png)
+![imagen demo](./screen.png)
 
 ## Prerequisitos
 
