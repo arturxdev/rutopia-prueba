@@ -1,0 +1,30 @@
+# Environment files (sensitive credentials)
+.env
+
+# Docker overrides (local configurations)
+docker-compose.override.yml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Node.js
+node_modules/
+.next/
+out/
+
+# Logs
+*.log
+npm-debug.log*

@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+      target: development
+    container_name: rutopia-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
+    volumes:
+      - ./back/app:/app/app:ro
+    networks:
+      - rutopia-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    command: uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: development
+    container_name: rutopia-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_MAPBOX_TOKEN=${NEXT_PUBLIC_MAPBOX_TOKEN}
+      - NEXT_PUBLIC_WS_URL=ws://localhost:8000/ws/chat
+    volumes:
+      - ./frontend/src:/app/src:ro
+      - ./frontend/public:/app/public:ro
+      - ./frontend/next.config.ts:/app/next.config.ts:ro
+      - ./frontend/tailwind.config.ts:/app/tailwind.config.ts:ro
+      - ./frontend/tsconfig.json:/app/tsconfig.json:ro
+      - frontend-node-modules:/app/node_modules
+      - frontend-next:/app/.next
+    networks:
+      - rutopia-network
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    command: npm run dev
+
+networks:
+  rutopia-network:
+    driver: bridge
+
+volumes:
+  frontend-node-modules:
+  frontend-next:
