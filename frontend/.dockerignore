@@ -41,3 +41,6 @@ yarn-error.log*
 
 # Misc
 .cache/
+
+# Prevent problematic next.config.js directory
+next.config.js/

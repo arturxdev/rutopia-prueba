@@ -4,6 +4,8 @@ Proyecto full-stack con Next.js 16 + React 19 (frontend) y FastAPI con WebSocket
 
 ![imagen demo](./screen.png)
 
+
+
 ## Prerequisitos
 
 - Docker y Docker Compose instalados
